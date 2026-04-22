@@ -4,11 +4,11 @@
     "slug": "optionpluse",
     "version": "1.0.0",
     "orientation": "portrait",
-    "icon": "./assets/opplus-icon.jpeg",
+    "icon": "./assets/opplus-icon.png",
     "userInterfaceStyle": "dark",
     "newArchEnabled": true,
     "splash": {
-      "image": "./assets/opplus-icon.jpeg",
+      "image": "./assets/opplus-icon.png",
       "resizeMode": "contain",
       "backgroundColor": "#0A0D14"
     },
@@ -16,25 +16,29 @@
       "supportsTablet": false,
       "bundleIdentifier": "com.optionpluse.app",
       "infoPlist": {
-        "ITSAppUsesNonExemptEncryption": false
+        "ITSAppUsesNonExemptEncryption": false,
+        "NSAppTransportSecurity": {
+          "NSAllowsArbitraryLoads": true
+        }
       }
     },
     "android": {
       "adaptiveIcon": {
-        "foregroundImage": "./assets/opplus-icon.jpeg",
+        "foregroundImage": "./assets/opplus-icon.png",
         "backgroundColor": "#0A0D14"
       },
       "package": "com.optionpluse.app",
       "versionCode": 1,
       "edgeToEdgeEnabled": true,
       "predictiveBackGestureEnabled": false,
+      "usesCleartextTraffic": true,
       "permissions": [
         "android.permission.INTERNET",
         "android.permission.ACCESS_NETWORK_STATE"
       ]
     },
     "web": {
-      "favicon": "./assets/opplus-icon.jpeg"
+      "favicon": "./assets/opplus-icon.png"
     },
     "extra": {
       "eas": {

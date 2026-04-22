@@ -10,33 +10,49 @@ import { supabase } from '../lib/supabase';
  *   2. EXPO_PUBLIC_API_URL           (set in .env — preferred for dev)
  *   3. Production server fallback (guarantees the app always reaches backend)
  */
-// ── Production server — always works as last-resort fallback ──────────────
+// ── Constants & Fallbacks ────────────────────────────────────────────────────
+
 const PROD_API_URL = 'http://65.0.29.22/api/v1';
 const PROD_API_KEY = 'OptionPluseSecretKey123';
 
-const BASE_URL: string =
-  (Constants.expoConfig?.extra?.apiBaseUrl as string | undefined) ??
-  process.env.EXPO_PUBLIC_API_URL ??
-  PROD_API_URL;
+/**
+ * Robustly resolve the API Base URL.
+ * Priority: 
+ * 1. Expo config (extra.apiBaseUrl) - Injected during EAS build from app.json
+ * 2. .env (EXPO_PUBLIC_API_URL) - Local development
+ * 3. Hardcoded fallback - Production IP
+ */
+const resolveBaseUrl = (): string => {
+  const url = Constants.expoConfig?.extra?.apiBaseUrl ||
+              process.env.EXPO_PUBLIC_API_URL ||
+              PROD_API_URL;
+  
+  // Ensure we have a trailing slash for consistent joining
+  return url.endsWith('/') ? url : `${url}/`;
+};
 
-const API_KEY: string =
-  (Constants.expoConfig?.extra?.apiKey as string | undefined) ??
-  process.env.EXPO_PUBLIC_API_KEY ??
-  PROD_API_KEY;
+/**
+ * Robustly resolve the API Key.
+ */
+const resolveApiKey = (): string => {
+  return Constants.expoConfig?.extra?.apiKey ||
+         process.env.EXPO_PUBLIC_API_KEY ||
+         PROD_API_KEY;
+};
 
-// ── Debug: log resolved URL so you can verify in Metro console ────────────
-console.log('[apiClient] BASE_URL resolved to:', BASE_URL);
+const BASE_URL = resolveBaseUrl();
+const API_KEY  = resolveApiKey();
+
+console.log('[apiClient] BASE_URL:', BASE_URL);
 
 // ── Factory (testable) ──────────────────────────────────────────────────────
 export function createApiClient(): AxiosInstance {
   const instance = axios.create({
     baseURL: BASE_URL,
-    timeout: 10_000,
+    timeout: 15_000,
     headers: {
       'Content-Type': 'application/json',
       Accept: 'application/json',
-      // SG-2: x-api-key is the primary auth for the mobile app.
-      // This satisfies the auth gate on all /api/* routes.
       ...(API_KEY ? { 'x-api-key': API_KEY } : {}),
     },
   });
@@ -44,24 +60,27 @@ export function createApiClient(): AxiosInstance {
   // ── Request interceptor: inject Supabase Bearer token or API key ─────────
   instance.interceptors.request.use(
     async (config: InternalAxiosRequestConfig) => {
-      // Fix Axios path resolution that removes "/api/v1" if a path starts with "/"
-      if (config.baseURL && !config.baseURL.endsWith('/')) {
-        config.baseURL += '/';
+      // Diagnostic logging in development
+      if (__DEV__) {
+        console.log(`[apiClient] Call: ${config.method?.toUpperCase()} ${config.url}`);
       }
-      if (config.url && config.url.startsWith('/')) {
+
+      // Ensure request URL doesn't have a leading slash if baseURL already ends with one
+      if (config.baseURL?.endsWith('/') && config.url?.startsWith('/')) {
         config.url = config.url.substring(1);
+      } else if (!config.baseURL?.endsWith('/') && !config.url?.startsWith('/')) {
+        // Ensure there is at least one slash between baseURL and url
+        config.url = '/' + config.url;
       }
 
       try {
         const { data } = await supabase.auth.getSession();
         const token = data?.session?.access_token;
-        // Only forward REAL Supabase JWTs (they start with 'eyJ').
-        // Skip dummy dev tokens like 'guest-token' to avoid 401s on the backend.
         if (token && token.startsWith('eyJ')) {
           config.headers.Authorization = `Bearer ${token}`;
         }
       } catch {
-        // Supabase unavailable during cold start — fall through
+        // Silent fail
       }
       return config;
     },

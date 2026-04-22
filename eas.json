@@ -15,23 +15,11 @@
       "distribution": "internal",
       "android": {
         "buildType": "apk"
-      },
-      "env": {
-        "EXPO_PUBLIC_API_URL": "http://65.0.29.22/api/v1",
-        "EXPO_PUBLIC_API_KEY": "OptionPluseSecretKey123",
-        "EXPO_PUBLIC_SUPABASE_URL": "https://zzmwtxgbtlnazohsiooc.supabase.co",
-        "EXPO_PUBLIC_SUPABASE_ANON_KEY": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Inp6bXd0eGdidGxuYXpvaHNpb29jIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzU4NTIzOTksImV4cCI6MjA5MTQyODM5OX0.-Pq7VofKMQ4ltqsVUncI4fjz0zijMRN1Bny9lfZ7VMg"
       }
     },
     "production": {
       "android": {
         "buildType": "app-bundle"
-      },
-      "env": {
-        "EXPO_PUBLIC_API_URL": "http://65.0.29.22/api/v1",
-        "EXPO_PUBLIC_API_KEY": "OptionPluseSecretKey123",
-        "EXPO_PUBLIC_SUPABASE_URL": "https://zzmwtxgbtlnazohsiooc.supabase.co",
-        "EXPO_PUBLIC_SUPABASE_ANON_KEY": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Inp6bXd0eGdidGxuYXpvaHNpb29jIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzU4NTIzOTksImV4cCI6MjA5MTQyODM5OX0.-Pq7VofKMQ4ltqsVUncI4fjz0zijMRN1Bny9lfZ7VMg"
       }
     }
   },

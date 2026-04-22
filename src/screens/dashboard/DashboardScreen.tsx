@@ -47,7 +47,7 @@ export const DashboardScreen: React.FC<DashboardScreenProps> = ({ navigation }) 
   const { colors } = useTheme();
   const styles = useAppStyles(useStyles);
   const { market } = useMarket();
-  const { data, isLoading, isError, refetch, isFetching } = useMarketSummary(market);
+  const { data, isLoading, isError, error, refetch, isFetching } = useMarketSummary(market);
 
   const loadingState = resolveLoadingState(data, isLoading, isFetching, isError);
 
@@ -96,6 +96,11 @@ export const DashboardScreen: React.FC<DashboardScreenProps> = ({ navigation }) 
           <View style={styles.centeredView}>
             <Text style={{ color: colors.error, fontWeight: '700' }}>Data temporarily unavailable</Text>
             <Text style={[styles.staleBadge, { marginTop: 6 }]}>Retrying automatically…</Text>
+            {error && (
+              <Text style={[styles.staleBadge, { marginTop: 12, color: colors.onSurfaceVariant, fontSize: 10, textAlign: 'center' }]}>
+                Diagnostic: {error instanceof Error ? error.message : String(error)}
+              </Text>
+            )}
           </View>
         )}
 

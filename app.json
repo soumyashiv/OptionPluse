@@ -46,10 +46,10 @@
       "supabaseUrl": "https://zzmwtxgbtlnazohsiooc.supabase.co",
       "supabaseAnonKey": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Inp6bXd0eGdidGxuYXpvaHNpb29jIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzU4NTIzOTksImV4cCI6MjA5MTQyODM5OX0.-Pq7VofKMQ4ltqsVUncI4fjz0zijMRN1Bny9lfZ7VMg",
       "eas": {
-        "projectId": "654b5826-adb5-488f-b01f-ecf68a9c28d0"
+        "projectId": "64ec26ed-09e9-4db9-8964-b3838de52edd"
       }
     },
-    "owner": "zeon-studios",
+    "owner": "shankszeons-organization",
     "plugins": [
       "expo-font"
     ]

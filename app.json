@@ -16,7 +16,10 @@
       "supportsTablet": false,
       "bundleIdentifier": "com.optionpluse.app",
       "infoPlist": {
-        "ITSAppUsesNonExemptEncryption": false
+        "ITSAppUsesNonExemptEncryption": false,
+        "NSAppTransportSecurity": {
+          "NSAllowsArbitraryLoads": true
+        }
       }
     },
     "android": {
@@ -26,6 +29,7 @@
       },
       "package": "com.optionpluse.app",
       "versionCode": 1,
+      "usesCleartextTraffic": true,
       "edgeToEdgeEnabled": true,
       "predictiveBackGestureEnabled": false,
       "permissions": [
@@ -37,6 +41,8 @@
       "favicon": "./assets/opplus-icon.png"
     },
     "extra": {
+      "apiBaseUrl": "http://65.0.29.22/api/v1",
+      "apiKey": "OptionPluseSecretKey123",
       "eas": {
         "projectId": "654b5826-adb5-488f-b01f-ecf68a9c28d0"
       }

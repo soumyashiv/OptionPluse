@@ -1,6 +1,5 @@
 import axios, { AxiosInstance, AxiosError, InternalAxiosRequestConfig, AxiosResponse } from 'axios';
 import Constants from 'expo-constants';
-import { Platform } from 'react-native';
 import { AppError, ErrorCode } from './errors';
 import { supabase } from '../lib/supabase';
 
@@ -9,23 +8,24 @@ import { supabase } from '../lib/supabase';
  * Priority:
  *   1. Expo config extra.apiBaseUrl  (set via app.json / eas.json)
  *   2. EXPO_PUBLIC_API_URL           (set in .env — preferred for dev)
- *   3. Hard fallback LAN IP for bare dev without env (last resort)
- *
- * NEVER hardcode an IP in committed code — use .env instead.
+ *   3. Production server fallback (guarantees the app always reaches backend)
  */
-const DEFAULT_API_URL = Platform.OS === 'android'
-  ? 'http://10.0.2.2:8000/api/v1'
-  : 'http://127.0.0.1:8000/api/v1';
+// ── Production server — always works as last-resort fallback ──────────────
+const PROD_API_URL = 'http://65.0.29.22/api/v1';
+const PROD_API_KEY = 'OptionPluseSecretKey123';
 
 const BASE_URL: string =
   (Constants.expoConfig?.extra?.apiBaseUrl as string | undefined) ??
   process.env.EXPO_PUBLIC_API_URL ??
-  DEFAULT_API_URL;
+  PROD_API_URL;
 
 const API_KEY: string =
   (Constants.expoConfig?.extra?.apiKey as string | undefined) ??
   process.env.EXPO_PUBLIC_API_KEY ??
-  '';
+  PROD_API_KEY;
+
+// ── Debug: log resolved URL so you can verify in Metro console ────────────
+console.log('[apiClient] BASE_URL resolved to:', BASE_URL);
 
 // ── Factory (testable) ──────────────────────────────────────────────────────
 export function createApiClient(): AxiosInstance {

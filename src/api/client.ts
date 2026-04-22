@@ -12,7 +12,7 @@ import { supabase } from '../lib/supabase';
  */
 // ── Constants & Fallbacks ────────────────────────────────────────────────────
 
-const PROD_API_URL = 'http://65.0.29.22/api/v1';
+const PROD_API_URL = 'https://optionpluse.in/api/v1';
 const PROD_API_KEY = 'OptionPluseSecretKey123';
 
 /**
@@ -111,7 +111,7 @@ export function createApiClient(): AxiosInstance {
         console.error(`[API Network Error] ${method} ${url}: Server unreachable. Details: ${errorDetail}`);
         throw new AppError(
           ErrorCode.SERVER_ERROR,
-          `Cannot reach API at ${BASE_URL}. Reason: ${errorDetail}. Check backend or .env.`,
+          `Cannot reach API at ${BASE_URL}. Reason: ${errorDetail}. Check server status.`,
           0,
         );
       }

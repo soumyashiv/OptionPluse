@@ -105,12 +105,13 @@ export function createApiClient(): AxiosInstance {
       const method = err.config?.method?.toUpperCase() || 'UNKNOWN';
       const url = err.config?.url || 'UNKNOWN_URL';
       
-      // Network error (no response at all — server down, wrong IP, etc.)
+      // Network error (no response at all — server down, wrong IP, SSL/Cleartext block, etc.)
       if (!err.response) {
-        console.error(`[API Network Error] ${method} ${url}: Server unreachable. Details: ${err.message}`);
+        const errorDetail = err.code ? `${err.message} (${err.code})` : err.message;
+        console.error(`[API Network Error] ${method} ${url}: Server unreachable. Details: ${errorDetail}`);
         throw new AppError(
           ErrorCode.SERVER_ERROR,
-          `Cannot reach API at ${BASE_URL}. Check backend is running and EXPO_PUBLIC_API_URL in .env.`,
+          `Cannot reach API at ${BASE_URL}. Reason: ${errorDetail}. Check backend or .env.`,
           0,
         );
       }

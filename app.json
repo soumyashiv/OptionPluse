@@ -51,7 +51,15 @@
     },
     "owner": "shankszeons-organization",
     "plugins": [
-      "expo-font"
+      "expo-font",
+      [
+        "expo-build-properties",
+        {
+          "android": {
+            "networkSecurityConfig": "./assets/network_security_config.xml"
+          }
+        }
+      ]
     ]
   }
 }

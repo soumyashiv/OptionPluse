@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<network-security-config>
+    <domain-config cleartextTrafficPermitted="true">
+        <!-- Allow cleartext HTTP for the specific production backend IP -->
+        <domain includeSubdomains="true">65.0.29.22</domain>
+        <!-- Also permit localhost/standard dev IPs -->
+        <domain includeSubdomains="true">127.0.0.1</domain>
+        <domain includeSubdomains="true">10.0.2.2</domain>
+    </domain-config>
+    <!-- Fallback: permit cleartext globally for this build to ensure we overrule OS defaults -->
+    <base-config cleartextTrafficPermitted="true" />
+</network-security-config>
